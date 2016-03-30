@@ -90,7 +90,7 @@ class Command(BaseCommand):
                         amenity_name = amenity_name.strip().title()
 
                         # Check to see if amenity already exists
-                        amenity_exists = Ammenity.objects.filter(
+                        amenity_exists = Amenity.objects.filter(
                                 name=amenity_name)
                         # If it exists, use the existing amenity
                         if amenity_exists:
