@@ -1,5 +1,5 @@
 from django.contrib import admin
-from skill_match_api_henderson.skill_match.models import HendersonPark, Amenity
+from skill_match.models import HendersonPark, Amenity
 
 
 @admin.register(HendersonPark)
