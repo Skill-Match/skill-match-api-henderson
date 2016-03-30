@@ -1,5 +1,5 @@
 from django.contrib import admin
-from skill_match.models import HendersonPark, Amenity
+from skill_match.models import HendersonPark, Amenity, Court
 
 
 @admin.register(HendersonPark)
@@ -10,6 +10,7 @@ class HendersonParkAdmin(admin.ModelAdmin):
 @admin.register(Amenity)
 class AmenityAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+
 
 @admin.register(Court)
 class CourtAdmin(admin.ModelAdmin):
