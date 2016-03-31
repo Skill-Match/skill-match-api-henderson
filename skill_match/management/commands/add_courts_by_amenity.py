@@ -6,7 +6,8 @@ from skill_match.models import HendersonPark, Court
 class Command(BaseCommand):
     """
         This command creates Court objects with a foreign key to HendersonPark
-        objects. It checks the amenity_set of the HendersonPark for a
+        objects. It checks the amenity_set of the HendersonPark, and adds
+        corresponding Courts for sports in the park's amenities.
     """
     def handle(self, *args, **options):
 
@@ -14,7 +15,8 @@ class Command(BaseCommand):
         count = 0
 
         # For each park, check to see if the amenity set contains a sport.
-        # If that Court does not already exist, create a new Court object
+        # If the Court for that sport does not already exist,
+        # create a new Court object
         for park in parks:
             if park.amenity_set.filter(name__icontains='tennis'):
                 # Only create new court if court does not exist already
@@ -34,6 +36,7 @@ class Command(BaseCommand):
                     Court.objects.create(park=park, sport='Pickleball')
                     count += 1
             if park.amenity_set.filter(
+                            # Check for multi-purpose field
                             Q(name__icontains='multi-purpose field') |
                             Q(name__icontains='multi-use field')):
                 if not park.court_set.filter(sport='Football'):
