@@ -12,6 +12,7 @@ class Command(BaseCommand):
 
         parks = HendersonPark.objects.all()
         count = 0
+
         # For each park, check to see if the amenity set contains a sport.
         # If that Court does not already exist, create a new Court object
         for park in parks:
