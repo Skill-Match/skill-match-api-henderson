@@ -22,7 +22,7 @@ class Profile(models.Model):
     LATE_TEEN = '18-19'
     TWENTIES = "20's"
     THIRTIES = "30's"
-    FOURTIES = "40's"
+    FORTIES = "40's"
     FIFTIES = "50's"
     SIXTY = "60+"
 
@@ -36,7 +36,7 @@ class Profile(models.Model):
         (LATE_TEEN, '18-19'),
         (TWENTIES, "20's"),
         (THIRTIES, "30's"),
-        (FOURTIES, "40's"),
+        (FORTIES, "40's"),
         (FIFTIES, "50's"),
         (SIXTY, "60+")
     )
