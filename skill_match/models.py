@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -112,3 +113,66 @@ def add_profile_image(sender, instance=None, created=False, **kwargs):
             instance.img_url = PICKLEBALL_IMG_URL
 
         instance.save()
+
+###############################################################################
+#
+# MATCH AND FEEDBACK MODELS
+#
+###############################################################################
+
+
+class Match(models.Model):
+    OPEN = 'Open'
+    CHALLENGE = 'Challenge'
+    JOINED = 'Joined'
+    DECLINED = 'Declined'
+    CONFIRMED = 'Confirmed'
+    COMPLETED = 'Completed'
+    CANCELED = 'Canceled'
+
+    STATUS_CHOICES = (
+        (OPEN, 'Open'),
+        (CHALLENGE, 'Challenge'),
+        (JOINED, 'Joined'),
+        (DECLINED, 'Declined'),
+        (CONFIRMED, 'Confirmed'),
+        (COMPLETED, 'Completed'),
+        (CANCELED, 'Canceled')
+    )
+
+    """
+    Process for Match:
+    1. User create match with park, sport, date, time, skill level wanted.
+    2. Creation process add user as creator and player on players many to many.
+    3. A different User signs up.
+    4. If tennis, User may confirm or decline match. If user accepts it is
+        confirmed. (is_confirmed=True). If user declines, it opens
+        (is_open=True)
+    5. When date and time expire, a command will close "complete match",
+        (is_completed=True)
+
+    Relationships:
+    1. creator(User)
+    2. players(User(s), m2m)
+    3. park(Park)
+
+    """
+    creator = models.ForeignKey(User, related_name='created_matches')
+    description = models.TextField(max_length=1000, null=True, blank=True)
+    park = models.ForeignKey(HendersonPark)
+    sport = models.CharField(max_length=25, choices=SPORT_CHOICES,
+                             default=TENNIS)
+    other = models.CharField(max_length=25, null=True, blank=True)
+    skill_level = models.PositiveIntegerField()
+    date = models.DateField()
+    time = models.TimeField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES,
+                              default=OPEN)
+    players = models.ManyToManyField(User, blank=True)
+    img_url = models.URLField(max_length=200, default=TROPHY_IMG_URL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return "{}'s {} match, match #{}".format(self.creator.username,
+                                                 self.sport, self.id)
