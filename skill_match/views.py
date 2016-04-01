@@ -7,3 +7,4 @@ from skill_match.serializers import HendersonParkSerializer
 class ListHendersonParks(generics.ListAPIView):
     queryset = HendersonPark.objects.all()
     serializer_class = HendersonParkSerializer
+

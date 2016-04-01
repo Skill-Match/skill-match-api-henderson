@@ -22,9 +22,13 @@ class CourtSerializer(serializers.ModelSerializer):
 
 class HendersonParkSerializer(serializers.ModelSerializer):
     court_set = CourtSerializer(many=True, read_only=True)
-    amenity_set = AmenitySerializer(many=True, read_only=True)
+    amenity_list = serializers.SerializerMethodField()
+
+    def get_amenity_list(self, obj):
+        amenities = obj.amenity_set.all()
+        return [amenity.name for amenity in amenities]
 
     class Meta:
         model = HendersonPark
-        fields = ('id', 'name', 'address', 'url', 'img_url', 'court_set', 'amenity_set')
+        fields = ('id', 'name', 'address', 'url', 'img_url', 'court_set', 'amenity_list')
         read_only_fields = ('name', 'address', 'url', 'img_url')
