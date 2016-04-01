@@ -176,3 +176,47 @@ class Match(models.Model):
     def __str__(self):
         return "{}'s {} match, match #{}".format(self.creator.username,
                                                  self.sport, self.id)
+
+
+class Feedback(models.Model):
+    """
+    Feedback process:
+    1. User inputs skill level(1-100), sportsmanship level(1-100), and
+        punctuality.
+    2. Creation process adds player being reviewed(through match relationship,
+        and reviewer through request.
+
+    Relationships:
+    1. reviewer(User)
+    2. player(User) - being reviewed
+    3. match(Match)
+
+    """
+    NO_SHOW = 'No Show'
+    ON_TIME = 'On Time'
+    LITTLE_LATE = 'Little bit late'
+    LATE = 'Late'
+    PUNCTUALITY_CHOICES = (
+        (NO_SHOW, 'No Show'),
+        (ON_TIME, 'On Time'),
+        (LITTLE_LATE, 'Little bit late'),
+        (LATE, 'Over 10 min late')
+    )
+
+    reviewer = models.ForeignKey(User, related_name='reviewed_feedbacks')
+    player = models.ForeignKey(User)
+    match = models.ForeignKey(Match)
+    skill = models.PositiveIntegerField()
+    sportsmanship = models.PositiveIntegerField()
+    availability = models.PositiveIntegerField()
+    punctuality = models.CharField(max_length=15,
+                                   choices=PUNCTUALITY_CHOICES,
+                                   default=ON_TIME)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "{}'s review: {} skill: {}".format(self.reviewer.username,
+                                                  self.player.username,
+                                                  self.skill)
+
