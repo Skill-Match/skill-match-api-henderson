@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -59,6 +59,7 @@ class HendersonPark(models.Model):
     address = models.CharField(max_length=150)
     url = models.URLField()
     img_url = models.URLField(null=True, blank=True, max_length=350)
+    location = models.PointField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
