@@ -7,9 +7,7 @@ from rest_framework.authtoken.models import Token
 
 @receiver(post_save, sender=User)
 def create_user_token(sender, instance=None, created=False, **kwargs):
-    """
-        When User object is created, Token with 1to1 is created for that user.
-    """
+    # When User object is created, Token with 1to1 is created for that user.
     if created:
         Token.objects.create(user=instance)
 
@@ -32,7 +30,7 @@ class Profile(models.Model):
         (OTHER, 'Other')
     )
     AGE_CHOICES = (
-        (UNDER_18, 'Under 16'),
+        (UNDER_18, 'Under 18'),
         (LATE_TEEN, '18-19'),
         (TWENTIES, "20's"),
         (THIRTIES, "30's"),
@@ -44,6 +42,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User)
     gender = models.CharField(max_length=8, choices=GENDER_CHOICES,
                               default=MALE)
-    age = models.CharField(max_length=8, choices=AGE_CHOICES)
+    age = models.CharField(max_length=8, choices=AGE_CHOICES, default=TWENTIES)
     wants_texts = models.BooleanField(default=False)
     phone_number = models.CharField(null=True, blank=True, max_length=15)

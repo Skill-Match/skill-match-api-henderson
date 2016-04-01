@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'skill_match',
+    'users',
 ]
 
 MIDDLEWARE_CLASSES = [
