@@ -218,4 +218,3 @@ class Feedback(models.Model):
         return "{}'s review: {} skill: {}".format(self.reviewer.username,
                                                   self.player.username,
                                                   self.skill)
-
