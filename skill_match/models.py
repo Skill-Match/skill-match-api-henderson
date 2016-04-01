@@ -208,7 +208,6 @@ class Feedback(models.Model):
     match = models.ForeignKey(Match)
     skill = models.PositiveIntegerField()
     sportsmanship = models.PositiveIntegerField()
-    availability = models.PositiveIntegerField()
     punctuality = models.CharField(max_length=15,
                                    choices=PUNCTUALITY_CHOICES,
                                    default=ON_TIME)
