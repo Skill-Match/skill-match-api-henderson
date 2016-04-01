@@ -39,7 +39,7 @@ class Command(BaseCommand):
             if address_block.name == 'p':
                 address = address_block.contents[0]
             else:
-                if address_block == NavigableString:
+                if type(address_block) == NavigableString:
                     address = address_block
                 else:
                     address = "No address provided"
