@@ -9,5 +9,4 @@ urlpatterns = (
         name='detail_update_user'),
     url(r'^get-token/$', ObtainAuthToken.as_view(),
         name='obtain_auth_token'),
-
 )
