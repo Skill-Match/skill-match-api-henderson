@@ -21,12 +21,16 @@ class CourtSerializer(serializers.ModelSerializer):
         fields = ('sport', 'other', 'img_url')
 
 
-class HendersonParkSerializer(serializers.ModelSerializer):
-    court_set = CourtSerializer(many=True, read_only=True)
+class HendersonParkSerializer(serializers.HyperlinkedModelSerializer):
+    court_images = serializers.SerializerMethodField()
     amenities = serializers.SerializerMethodField()
     distance = serializers.DecimalField(source='distance.mi', max_digits=10,
                                         decimal_places=2, required=False,
                                         read_only=True)
+
+    def get_court_images(self, obj):
+        courts = obj.court_set.all()
+        return [court.img_url for court in courts]
 
     def get_amenities(self, obj):
         amenities = obj.amenity_set.all()
@@ -34,9 +38,9 @@ class HendersonParkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HendersonPark
-        fields = ('id', 'name', 'address', 'url', 'img_url', 'court_set',
-                  'amenities', 'distance')
-        read_only_fields = ('name', 'address', 'url', 'img_url')
+        fields = ('url', 'id', 'name', 'address', 'img_url', 'distance',
+                  'amenities', 'court_images')
+        read_only_fields = ('name', 'address', 'img_url')
 
 
 # class MatchSerializer(serializers.ModelSerializer):
@@ -79,7 +83,7 @@ class HendersonParkSerializer(serializers.ModelSerializer):
 #         return match
 
 
-class MatchSerializer(serializers.ModelSerializer):
+class MatchSerializer(serializers.HyperlinkedModelSerializer):
     park_name = serializers.ReadOnlyField(source='park.name')
     creator_name = serializers.ReadOnlyField(source='creator.username')
     time = serializers.TimeField(format="%I:%M %p")
@@ -91,11 +95,11 @@ class MatchSerializer(serializers.ModelSerializer):
                                         required=False,
                                         read_only=True)
 
-    read_only_fields = ('id', 'creator', 'players', 'status', 'img_url',
-                        'distance')
-
     class Meta:
         model = Match
-        fields = ('id', 'creator', 'creator_name', 'description', 'park',
-                  'park_name', 'sport', 'other', 'skill_level', 'date',
-                  'time', 'status', 'distance')
+        fields = ('url', 'id', 'creator', 'creator_name', 'title',
+                  'description', 'park',
+                  'park_name', 'sport', 'other', 'img_url', 'skill_level',
+                  'date', 'time', 'status', 'distance')
+        read_only_fields = ('url', 'id', 'creator', 'players', 'status',
+                            'img_url', 'distance')

@@ -202,3 +202,10 @@ class ListCreateMatches(generics.ListCreateAPIView):
                 'park__location', pnt)).order_by('distance')[:40]
 
         return qs
+
+
+class DetailUpdateMatch(generics.RetrieveUpdateDestroyAPIView):
+    # Detail Update Match
+    # permission_classes = (IsOwnerOrReadOnly,)
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer

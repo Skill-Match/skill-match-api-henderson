@@ -4,7 +4,7 @@ from skill_match.models import HendersonPark, Amenity, Court, Match, Feedback
 
 @admin.register(HendersonPark)
 class HendersonParkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'address', 'url', 'img_url', 'location')
+    list_display = ('id', 'name', 'address', 'henderson_url', 'img_url', 'location')
 
 
 @admin.register(Amenity)

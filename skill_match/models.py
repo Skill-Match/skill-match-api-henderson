@@ -58,7 +58,7 @@ class HendersonPark(models.Model):
     """
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=150)
-    url = models.URLField()
+    henderson_url = models.URLField()
     img_url = models.URLField(null=True, blank=True, max_length=350)
     location = models.PointField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
