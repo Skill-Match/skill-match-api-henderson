@@ -83,6 +83,7 @@ class Amenity(models.Model):
 
 
 class Court(models.Model):
+    # Represents a Sport (Court or Field) at a certain Park
     park = models.ForeignKey(HendersonPark, null=True, blank=True)
     sport = models.CharField(max_length=25, choices=SPORT_CHOICES)
     other = models.CharField(max_length=25, null=True, blank=True)
@@ -158,6 +159,7 @@ class Match(models.Model):
 
     """
     creator = models.ForeignKey(User, related_name='created_matches')
+    title = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
     park = models.ForeignKey(HendersonPark)
     sport = models.CharField(max_length=25, choices=SPORT_CHOICES,
