@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from skill_match.models import HendersonPark, Amenity, Court, Match
+from skill_match.models import HendersonPark, Amenity, Court, Match, Feedback
 
 
 ###############################################################################
@@ -100,6 +100,26 @@ class MatchSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'creator', 'creator_name', 'title',
                   'description', 'park',
                   'park_name', 'sport', 'other', 'img_url', 'skill_level',
-                  'date', 'time', 'status', 'distance')
+                  'date', 'time', 'players', 'status', 'distance')
         read_only_fields = ('url', 'id', 'creator', 'players', 'status',
                             'img_url', 'distance')
+
+
+# Simple Serializer for Match Joins, Leaves, Declines, Confirms, Cancels
+class ChallengerMatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = ('id', 'creator', 'description', 'park', 'sport',
+                  'skill_level', 'date', 'time', 'players',
+                  'status')
+        read_only_fields = ('id', 'creator', 'description', 'park', 'sport',
+                            'skill_level', 'date', 'time', 'players',
+                            'status')
+
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Feedback
+        fields = ('id', 'reviewer', 'player', 'match', 'skill',
+                  'sportsmanship', 'punctuality', 'availability')
+        read_only_fields = ('id', 'reviewer', 'player',)

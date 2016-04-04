@@ -1,11 +1,16 @@
 import geocoder
 import re
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import render
 from rest_framework import generics
-from skill_match.models import HendersonPark, Match
+from skill_match.exceptions import NotInMatch, NonExistingPlayer, \
+    OneFeedbackAllowed, NoPlayerToConfirmOrDecline, \
+    OnlyCreatorMayConfirmOrDecline, AlreadyConfirmed, SelfSignUp, AlreadyJoined
+from skill_match.models import HendersonPark, Match, Feedback
 from django.contrib.gis.db.models.functions import Distance
-from skill_match.serializers import HendersonParkSerializer, MatchSerializer
+from skill_match.serializers import HendersonParkSerializer, MatchSerializer, \
+    FeedbackSerializer, ChallengerMatchSerializer
 from django.contrib.gis.geos import GEOSGeometry as Geos
 
 
@@ -209,3 +214,250 @@ class DetailUpdateMatch(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (IsOwnerOrReadOnly,)
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
+
+###############################################################################
+#
+# JOIN, LEAVE, DECLINE, CONFIRM MATCH
+#
+###############################################################################
+
+
+class JoinMatch(generics.UpdateAPIView):
+    # permission_classes = (permissions.IsAuthenticated,)
+    queryset = Match.objects.all()
+    serializer_class = ChallengerMatchSerializer
+
+    def perform_update(self, serializer):
+        """
+        Gets all players from serializer and puts them in player_list. Add the
+        User making the request to the player_list.
+        If Sport is Tennis, close match and notify match creator using
+        join_match_notify() from notifications.
+        :param serializer:
+        :return:
+        """
+        # Get joiner as requesting user
+        joiner = self.request.user
+        # Get creator as the matches creator
+        creator = serializer.instance.creator
+
+        # ?????????????????????
+        #
+        # Disallow creator to join own match, really need this?
+        if joiner == creator:
+            raise SelfSignUp
+
+        # Get list of players in match
+        players = serializer.instance.players.all()
+        player_list = list(players)
+
+        # Don't allow multiple join by same user.
+        if joiner in player_list:
+            raise AlreadyJoined
+
+        # Add player to list in matches
+        player_list.append(joiner)
+
+        # Update status if Tennis or Pickleball, save serializer with new
+        # player list.
+        sport = serializer.instance.sport
+        if sport == 'Tennis':
+            serializer.save(players=player_list, status='Joined')
+            # match = serializer.save(players=player_list, is_open=True)
+            # join_match_notify(match, joiner)
+        else:
+            serializer.save(players=player_list)
+
+
+class LeaveMatch(generics.UpdateAPIView):
+    # permission_classes = (permissions.IsAuthenticated,)
+    queryset = Match.objects.all()
+    serializer_class = ChallengerMatchSerializer
+
+    def perform_update(self, serializer):
+        """
+        Users may leave a match if they get tired waiting for Match creator to
+        confirm.
+        If requesting user is in match, and the match is not confirmed already,
+        they are removed from player_list.
+        If sport is Tennis, match opens up again.
+        Match creator is notified that the user left match and match is
+        open again.
+        :param serializer:
+        :return:
+        """
+
+        # ???
+        #
+        # Raise error if Match is already confirmed. Say you must cancel
+        # instead.
+        if serializer.instance.status == 'Confirmed':
+            raise AlreadyConfirmed
+
+        # ?? Raise error if user is the creator. Do I need this? Prob not.
+        leaver = self.request.user
+        if leaver == serializer.instance.creator:
+            raise SelfSignUp
+
+        # Get sport and player_list
+        sport = serializer.instance.sport
+        players = serializer.instance.players.all()
+        player_list = list(players)
+
+        # ?? Raise error if leaver not in the match. Do I need this?
+        if leaver not in player_list:
+            raise NotInMatch
+
+        # Remove player from Match
+        player_list.remove(leaver)
+
+        # If sport is Tennis or 1v1, status = Open
+        if sport == 'Tennis':
+            serializer.save(players=player_list, status='Open')
+            # match = serializer.save(players=player_list, status='Open')
+            # leave_match_notify(match, leaver)
+        else:
+            serializer.save(players=player_list)
+
+
+class DeclineMatch(generics.UpdateAPIView):
+    # Add permission as match owner?
+    # permission_classes = (permissions.IsAuthenticated,)
+    queryset = Match.objects.all()
+    serializer_class = ChallengerMatchSerializer
+
+    def perform_update(self, serializer):
+        """
+        Remove User (challenger) from Match. Notify match challenger.
+        Match is opened again if not a challenge.
+
+        :param serializer:
+        :return:
+        """
+        # ?? Raise error to decline match that has no player
+        if serializer.instance.players.count() == 1:
+            raise NoPlayerToConfirmOrDecline
+
+        # Decliner is requesting user
+        decliner = self.request.user
+
+        # ?? Raise error if decliner is not the creator of the match , need this?
+        if not decliner == serializer.instance.creator:
+                raise OnlyCreatorMayConfirmOrDecline
+
+        serializer.save(players=[decliner, ], status='Open')
+
+        # Get Challenger as the other player in a 1v1 match
+        # challenger = serializer.instance.players.exclude(id=decliner.id)[0]
+
+        # Remove player from match and re-open the match
+        # decline_match_notify(match, challenger)
+
+        # # CHALLENGE CODE NEEDS REFACTOR
+        # if serializer.instance.status == 'Challenge':
+        #     if challenger == serializer.instance.creator:
+        #         match = serializer.save(challenge_declined=True)
+        #         # [TEMP REMOVE] challenge_declined_notify(match, challenger)
+        # else:
+
+
+
+class ConfirmMatch(generics.UpdateAPIView):
+    # Add permission as match owner?
+    # permission_classes = (permissions.IsAuthenticated, )
+    queryset = Match.objects.all()
+    serializer_class = ChallengerMatchSerializer
+
+    def perform_update(self, serializer):
+        """
+        Confirm match. Only change here is is_confirmed=True. Needs refactor
+        with Match model
+        :param serializer:
+        :return:
+        """
+        # ?? Raise error to decline match that has no player
+        if serializer.instance.players.count() == 1:
+            raise NoPlayerToConfirmOrDecline
+
+        # Get confirmer as requesting User
+        confirmer = self.request.user
+
+        if not confirmer == serializer.instance.creator:
+                raise OnlyCreatorMayConfirmOrDecline
+
+        serializer.save(status='Confirmed')
+
+        # Old code for Challenge Match needs refactoring
+        #
+        # if serializer.instance.is_challenge:
+        #     match = serializer.save(is_confirmed=True)
+        #     # [TEMP REMOVE] challenge_accepted_notify(match)
+        # else:
+        #     if not confirmer == serializer.instance.creator:
+        #         raise OnlyCreatorMayConfirmOrDecline
+        #
+        #     match = serializer.save(is_confirmed=True)
+        #     confirm_match_notify(match)
+
+
+###############################################################################
+#
+# FEEDBACK Related Views
+#
+###############################################################################
+
+
+class CreateFeedback(generics.CreateAPIView):
+    # permission_classes = (permissions.IsAuthenticated,)
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+
+    def perform_create(self, serializer):
+        """If no player, Get match_id from serializer. Find Match object with
+           match_id. Use Match object to find player and reviewer from the
+           match. (Reviewer = logged in user.
+          If player, use player_id to find User to be reviewed
+          Error if they already provided Feedback for that player.
+        """
+        # Check to see if Match was
+        # Reviewer is the user making request
+        reviewer = self.request.user
+
+        # Look up Match related to feedback
+        match_id = serializer.initial_data['match']
+        match = Match.objects.get(pk=match_id)
+
+        # Assure user is in the related match.
+        if reviewer not in match.players.all():
+            raise NotInMatch
+
+        # ---RATE BY USER ID--- # Check to see if "player: id" was in request
+        player_id = serializer.initial_data.get('player', None)
+        if player_id:
+
+            # if id for player does not match a user , error
+            existing_user = User.objects.filter(id=player_id)
+            if not existing_user:
+                raise NonExistingPlayer
+
+            # Get User for player identified
+            player = User.objects.get(pk=player_id)
+
+            # ONLY ONE FEEDBACK ALLOWED
+            existing_feedback = match.feedback_set.filter(reviewer=reviewer,
+                                                          player=player)
+            if existing_feedback:
+                raise OneFeedbackAllowed
+            serializer.save(player=player, reviewer=reviewer)
+
+        # RATE WITHOUT PLAYER ID (1v1) ONLY!
+        else:
+            # ONLY ONE FEEDBACK ALLOWED
+            existing_feedback = match.feedback_set.filter(reviewer=reviewer)
+            if existing_feedback:
+                raise OneFeedbackAllowed
+
+            # Get the player in the match who is not the reviewer
+            player = match.players.exclude(id=reviewer.id)[0]
+
+            serializer.save(player=player, reviewer=reviewer)
