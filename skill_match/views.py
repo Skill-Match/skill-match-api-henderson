@@ -134,6 +134,7 @@ class ListCreateMatches(generics.ListCreateAPIView):
         #     Court.objects.create(park=match.park, sport=match.sport)
         # create_match_notify(match)
 
+
     def get_queryset(self):
         """
         /matches?sport=tennis
@@ -203,6 +204,30 @@ class DetailUpdateMatch(generics.RetrieveUpdateDestroyAPIView):
     # permission_classes = (IsOwnerOrReadOnly,)
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
+
+    def perform_update(self, serializer):
+
+        previous = self.get_object()
+        new_sport = serializer.validated_data['sport']
+
+        if not previous.sport == new_sport:
+            if new_sport == 'Tennis':
+                img_url = TENNIS_IMG_URL
+            elif new_sport == 'Basketball':
+                img_url = BASKETBALL_IMG_URL
+            elif new_sport == 'Football':
+                img_url = FOOTBALL_IMG_URL
+            elif new_sport == 'Soccer':
+                img_url = SOCCER_IMG_URL
+            elif new_sport == 'Volleyball':
+                img_url = VOLLEYBALL_IMG_URL
+            elif new_sport == 'Pickleball':
+                img_url = PICKLEBALL_IMG_URL
+            else:
+                img_url = TROPHY_IMG_URL
+
+            serializer.save(img_url=img_url)
+
 
 ###############################################################################
 #
