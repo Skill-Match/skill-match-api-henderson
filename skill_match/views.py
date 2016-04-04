@@ -112,28 +112,17 @@ class ListCreateMatches(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
 
-        sport = serializer.initial_data['sport']
-
-        # Choose Image for corresponding sport chosen
-        if sport == 'Tennis':
-            img_url = TENNIS_IMG_URL
-        elif sport == 'Basketball':
-            img_url = BASKETBALL_IMG_URL
-        elif sport == 'Football':
-            img_url = FOOTBALL_IMG_URL
-        elif sport == 'Soccer':
-            img_url = SOCCER_IMG_URL
-        elif sport == 'Volleyball':
-            img_url = VOLLEYBALL_IMG_URL
-        elif sport == 'Pickleball':
-            img_url = PICKLEBALL_IMG_URL
-        else:
-            img_url = TROPHY_IMG_URL
-
         # Assign logged in user to Math's Creator (in serializer.save)
         user = self.request.user
 
-        serializer.save(creator=user, img_url=img_url)
+        challenged_player = serializer.initial_data.get('challenged', None)
+        if challenged_player:
+            challenged = User.objects.get(pk=challenged_player)
+            serializer.save(creator=user, players=[user, challenged],
+                            status='Challenge')
+        else:
+            # Set creator as requesting user, add img_url,
+            serializer.save(creator=user, players=[user, ])
 
         # OLD CODE TO ADD COURTS TO PARKS WHERE THEY DIDN'T ALREADY EXIST
         #

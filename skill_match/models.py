@@ -97,7 +97,7 @@ class Court(models.Model):
 
 # After Court object is created, add corresponding sport image.
 @receiver(post_save, sender=Court)
-def add_profile_image(sender, instance=None, created=False, **kwargs):
+def add_court_image(sender, instance=None, created=False, **kwargs):
 
     if created:
         if instance.sport == 'Tennis':
@@ -178,6 +178,27 @@ class Match(models.Model):
     def __str__(self):
         return "{}'s {} match, match #{}".format(self.creator.username,
                                                  self.sport, self.id)
+
+
+@receiver(post_save, sender=Match)
+def add_match_image(sender, instance=None, created=False, **kwargs):
+
+    if created:
+
+        if instance.sport == 'Tennis':
+            instance.img_url = TENNIS_IMG_URL
+        elif instance.sport == 'Basketball':
+            instance.img_url = BASKETBALL_IMG_URL
+        elif instance.sport == 'Football':
+            instance.img_url = FOOTBALL_IMG_URL
+        elif instance.sport == 'Soccer':
+            instance.img_url = SOCCER_IMG_URL
+        elif instance.sport == 'Volleyball':
+            instance.img_url = VOLLEYBALL_IMG_URL
+        elif instance.sport == 'Pickleball':
+            instance.img_url = PICKLEBALL_IMG_URL
+
+        instance.save()
 
 
 class Feedback(models.Model):
