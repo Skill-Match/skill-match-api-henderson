@@ -210,7 +210,9 @@ class DetailUpdateMatch(generics.RetrieveUpdateDestroyAPIView):
         previous = self.get_object()
         new_sport = serializer.validated_data['sport']
 
-        if not previous.sport == new_sport:
+        if previous.sport == new_sport:
+            serializer.save()
+        else:
             if new_sport == 'Tennis':
                 img_url = TENNIS_IMG_URL
             elif new_sport == 'Basketball':
