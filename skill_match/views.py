@@ -19,6 +19,7 @@ from django.contrib.gis.geos import GEOSGeometry as Geos
 # Image URL's used for sport representation
 #
 ###############################################################################
+from skill_match.tasks import update_skills
 
 TENNIS_IMG_URL = "http://res.cloudinary.com/skill-match/image/upload/" \
                  "c_scale,w_200/v1451803727/1451824644_tennis_jegpea.png"
@@ -478,4 +479,4 @@ class CreateFeedback(generics.CreateAPIView):
             feedback = serializer.save(player=player, reviewer=reviewer)
 
             # Update feedback asynchronously
-            update_skills(feedback.player, feedback.match.sport)
+            update_skills.delay(feedback.player, feedback.match.sport)

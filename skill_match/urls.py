@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from skill_match.views import ListHendersonParks, DetailHendersonPark, \
     ListCreateMatches, DetailUpdateMatch, JoinMatch, LeaveMatch, DeclineMatch, \
-    ConfirmMatch
+    ConfirmMatch, CreateFeedback
 
 urlpatterns = (
     url(r'^parks/$', ListHendersonParks.as_view(), name='list_parks'),
@@ -18,4 +18,5 @@ urlpatterns = (
         name='decline_match'),
     url(r'^matches/(?P<pk>\d+)/confirm$', ConfirmMatch.as_view(),
         name='confirm_match'),
+    url(r'^feedbacks/$, CreateFeedback.as_view()', name='create_feedback')
 )
