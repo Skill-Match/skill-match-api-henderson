@@ -435,7 +435,6 @@ class CreateFeedback(generics.CreateAPIView):
           If player, use player_id to find User to be reviewed
           Error if they already provided Feedback for that player.
         """
-        # Check to see if Match was
         # Reviewer is the user making request
         reviewer = self.request.user
 
@@ -464,7 +463,7 @@ class CreateFeedback(generics.CreateAPIView):
                                                           player=player)
             if existing_feedback:
                 raise OneFeedbackAllowed
-            serializer.save(player=player, reviewer=reviewer)
+            feedback = serializer.save(player=player, reviewer=reviewer)
 
         # RATE WITHOUT PLAYER ID (1v1) ONLY!
         else:
@@ -476,4 +475,7 @@ class CreateFeedback(generics.CreateAPIView):
             # Get the player in the match who is not the reviewer
             player = match.players.exclude(id=reviewer.id)[0]
 
-            serializer.save(player=player, reviewer=reviewer)
+            feedback = serializer.save(player=player, reviewer=reviewer)
+
+            # Update feedback asynchronously
+            update_skills(feedback.player, feedback.match.sport)
