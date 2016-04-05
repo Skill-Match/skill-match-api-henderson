@@ -18,5 +18,5 @@ urlpatterns = (
         name='decline_match'),
     url(r'^matches/(?P<pk>\d+)/confirm$', ConfirmMatch.as_view(),
         name='confirm_match'),
-    url(r'^feedbacks/$, CreateFeedback.as_view()', name='create_feedback')
+    url(r'^feedbacks/$', CreateFeedback.as_view(), name='create_feedback')
 )

@@ -12,6 +12,7 @@ from django.contrib.gis.db.models.functions import Distance
 from skill_match.serializers import HendersonParkSerializer, MatchSerializer, \
     FeedbackSerializer, ChallengerMatchSerializer
 from django.contrib.gis.geos import GEOSGeometry as Geos
+from skill_match.tasks import update_skills, test_task
 
 
 ###############################################################################
@@ -19,7 +20,7 @@ from django.contrib.gis.geos import GEOSGeometry as Geos
 # Image URL's used for sport representation
 #
 ###############################################################################
-from skill_match.tasks import update_skills
+
 
 TENNIS_IMG_URL = "http://res.cloudinary.com/skill-match/image/upload/" \
                  "c_scale,w_200/v1451803727/1451824644_tennis_jegpea.png"
@@ -479,4 +480,5 @@ class CreateFeedback(generics.CreateAPIView):
             feedback = serializer.save(player=player, reviewer=reviewer)
 
             # Update feedback asynchronously
-            update_skills.delay(feedback.player, feedback.match.sport)
+            test_task.delay()
+            update_skills.delay(feedback.player.id, feedback.match.sport)

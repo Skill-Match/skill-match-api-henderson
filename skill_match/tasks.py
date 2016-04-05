@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from celery import shared_task
+from django.contrib.auth.models import User
 from skill_match.models import Feedback
 from users.models import Skill
 
@@ -11,6 +12,9 @@ def test_task():
 
 @shared_task
 def update_skills(player, sport):
+
+    print("hiello there ther ")
+    player = User.objects.get(id=player)
     feedback_count = Feedback.objects.filter(player=player).filter(match__sport=sport).count()
     skill = Skill.objects.filter(player=player).filter(sport=sport)
 

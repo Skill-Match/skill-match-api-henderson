@@ -81,5 +81,5 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = ('id', 'reviewer', 'player', 'match', 'skill',
-                  'sportsmanship', 'punctuality', 'availability')
+                  'sportsmanship', 'punctuality',)
         read_only_fields = ('id', 'reviewer', 'player',)
