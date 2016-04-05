@@ -152,9 +152,6 @@ class ListCreateMatches(generics.ListCreateAPIView):
         5. username: filter by only matches the user with that username
            participated in
 
-        * Uses Nominatim from the geopy library to get latitude and longitude
-        based on the zipcode.
-
         Default Ordering: by distance
         If no location provided, default location is Las Vegas, NV.
         Uses Geos Point objects to order by distance.
@@ -246,14 +243,6 @@ class JoinMatch(generics.UpdateAPIView):
     serializer_class = ChallengerMatchSerializer
 
     def perform_update(self, serializer):
-        """
-        Gets all players from serializer and puts them in player_list. Add the
-        User making the request to the player_list.
-        If Sport is Tennis, close match and notify match creator using
-        join_match_notify() from notifications.
-        :param serializer:
-        :return:
-        """
         # Get joiner as requesting user
         joiner = self.request.user
         # Get creator as the matches creator
@@ -293,17 +282,6 @@ class LeaveMatch(generics.UpdateAPIView):
     serializer_class = ChallengerMatchSerializer
 
     def perform_update(self, serializer):
-        """
-        Users may leave a match if they get tired waiting for Match creator to
-        confirm.
-        If requesting user is in match, and the match is not confirmed already,
-        they are removed from player_list.
-        If sport is Tennis, match opens up again.
-        Match creator is notified that the user left match and match is
-        open again.
-        :param serializer:
-        :return:
-        """
 
         # ???
         #
@@ -345,13 +323,7 @@ class DeclineMatch(generics.UpdateAPIView):
     serializer_class = ChallengerMatchSerializer
 
     def perform_update(self, serializer):
-        """
-        Remove User (challenger) from Match. Notify match challenger.
-        Match is opened again if not a challenge.
 
-        :param serializer:
-        :return:
-        """
         # ?? Raise error to decline match that has no player
         if serializer.instance.players.count() == 1:
             raise NoPlayerToConfirmOrDecline
@@ -387,12 +359,7 @@ class ConfirmMatch(generics.UpdateAPIView):
     serializer_class = ChallengerMatchSerializer
 
     def perform_update(self, serializer):
-        """
-        Confirm match. Only change here is is_confirmed=True. Needs refactor
-        with Match model
-        :param serializer:
-        :return:
-        """
+
         # ?? Raise error to decline match that has no player
         if serializer.instance.players.count() == 1:
             raise NoPlayerToConfirmOrDecline
@@ -431,12 +398,7 @@ class CreateFeedback(generics.CreateAPIView):
     serializer_class = FeedbackSerializer
 
     def perform_create(self, serializer):
-        """If no player, Get match_id from serializer. Find Match object with
-           match_id. Use Match object to find player and reviewer from the
-           match. (Reviewer = logged in user.
-          If player, use player_id to find User to be reviewed
-          Error if they already provided Feedback for that player.
-        """
+
         # Reviewer is the user making request
         reviewer = self.request.user
 
