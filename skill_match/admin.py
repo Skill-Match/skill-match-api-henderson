@@ -20,7 +20,7 @@ class CourtAdmin(admin.ModelAdmin):
 @admin.register(Match)
 class CourtAdmin(admin.ModelAdmin):
     list_display = ('id', 'creator', 'description', 'sport', 'other',
-                    'skill_level', 'status', 'img_url')
+                    'skill_level', 'status', 'date', 'img_url', )
 
 
 @admin.register(Feedback)
