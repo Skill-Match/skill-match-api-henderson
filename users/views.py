@@ -10,9 +10,7 @@ from users.serializers import UserSerializer
 
 
 class ObtainAuthToken(APIView):
-    """
-    Overwrite built in function to return username and user_id with token
-    """
+    # Overwrite built in class to return username and user_id with token
     throttle_classes = ()
     permission_classes = ()
     parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
