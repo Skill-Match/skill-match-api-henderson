@@ -8,7 +8,7 @@ INSTALLED_APPS = tuple([app for app in INSTALLED_APPS if app not in BLACKLIST])
 
 import dj_database_url
 DATABASES['default'] = dj_database_url.config()
-# This is added for PostGIS
+# This is added for PostGIS {TEST HEROKU}
 DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
