@@ -51,7 +51,7 @@ class Command(BaseCommand):
             if not already_exists:
                 # Create the HendersonPark object
                 this_park = HendersonPark.objects.create(name=name,
-                                                         url=park_url,
+                                                         henderson_url=park_url,
                                                          address=address)
                 # If there is an image, add it.
                 if img:
