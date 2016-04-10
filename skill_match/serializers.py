@@ -39,8 +39,8 @@ class HendersonParkSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = HendersonPark
         fields = ('url', 'id', 'name', 'address', 'img_url', 'distance',
-                  'amenities', 'court_images')
-        read_only_fields = ('name', 'address', 'img_url')
+                  'amenities', 'henderson_url', 'court_images')
+        read_only_fields = ('name', 'address', 'img_url', 'henderson_url')
 
 
 class MatchSerializer(serializers.HyperlinkedModelSerializer):
