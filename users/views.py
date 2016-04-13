@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import parsers, renderers
 from rest_framework import generics
+from skill_match import permissions
 from users.serializers import UserSerializer
 
 
@@ -42,5 +43,6 @@ class RegisterUser(generics.CreateAPIView):
 
 class DetailUpdateUser(generics.RetrieveUpdateDestroyAPIView):
 
+    permission_classes = (permissions.IsUser,)
     queryset = User.objects.all()
     serializer_class = UserSerializer

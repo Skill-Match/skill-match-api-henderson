@@ -1,0 +1,27 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "skill_match/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "skill_match/css/main.css" %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="{% url 'index' %}">All</a></li>
+                <li role="presentation"><a href="{% url 'park_docs' %}">Parks</a></li>
+                <li role="presentation"><a href="{% url 'match_docs' %}">Matches</a></li>
+                <li role="presentation"><a href="{% url 'user_docs' %}">Users</a></li>
+            </ul>
+        </div>
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{% static "skill_match/js/jquery-2.2.3.min.js" %}"></script>
+    <script src="{% static "skill_match/js/bootstrap.min.js" %}"></script>
+
+</body>

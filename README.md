@@ -31,4 +31,4 @@ sportsmanship and experience.
 
 
 ^Pickleball is a game similar to Tennis, played with a ball similar to a heavy wiffle ball. We are
-looking to build something specific for Henderson, NV.
+looking to build something~ specific for Henderson," NV.

@@ -5,10 +5,10 @@ from skill_match.views import ListHendersonParks, DetailHendersonPark, \
 
 urlpatterns = (
     url(r'^parks/$', ListHendersonParks.as_view(), name='list_parks'),
-    url(r'^parks/(?P<pk>\d+)/$', DetailHendersonPark.as_view(),
+    url(r'^parks/(?P<pk>\d+)', DetailHendersonPark.as_view(),
         name='hendersonpark-detail'),
     url(r'^matches/$', ListCreateMatches.as_view(), name='list_matches'),
-    url(r'^matches/(?P<pk>\d+)/$', DetailUpdateMatch.as_view(),
+    url(r'^matches/(?P<pk>\d+)$', DetailUpdateMatch.as_view(),
         name='match-detail'),
     url(r'^matches/(?P<pk>\d+)/join$', JoinMatch.as_view(),
         name='join_match'),
@@ -18,5 +18,5 @@ urlpatterns = (
         name='decline_match'),
     url(r'^matches/(?P<pk>\d+)/confirm$', ConfirmMatch.as_view(),
         name='confirm_match'),
-    url(r'^feedbacks/$', CreateFeedback.as_view(), name='create_feedback')
+    url(r'^feedbacks$', CreateFeedback.as_view(), name='create_feedback')
 )

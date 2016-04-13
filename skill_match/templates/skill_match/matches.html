@@ -1,0 +1,286 @@
+{% extends 'skill_match/base.html' %}
+{% load staticfiles %}
+
+{% block title %} Matches {% endblock %}
+
+{% block content%}
+    <div class="row">
+        <h1>Matches</h1>
+        <h3>Matches - List and Create</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- List Matches --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches</td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'list_matches' %}">
+                            /api/matches
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches</h4>
+                        <p>
+                            Fetches the 40 closest matches by location. Location can be provided with a zip
+                            code or coordinates (see examples below). If no location is provided, the
+                            default location is Henderson, NV.
+                        </p>
+
+                    </td>
+                </tr>
+                <!-- Create Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches</td>
+                    <td class="col-md-1">POST</td>
+                    <td class="col-md-3">
+                        <a href="{% url 'list_matches' %}" class="post">/api/matches</a>
+                        <pre>
+{
+    "title": "Bob's Match #1",
+    "description": "Looking for...",
+    "park": "https://skill-match-henderson.herokuapp.com/api/parks/174",
+    "sport": "Basketball",
+    "other": "",
+    "skill_level": 82,
+    "date": "2016-06-01",
+    "time": "18:30"
+}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Create Match</h4>
+                        <p>
+                            POST with the format in the example. The url passed into park is available with any park details you fetch.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List User Matches --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?username=[username]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?username=tennismonster" target="_blank">
+                            /api/matches?username=tennismonster
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List User Matches</h4>
+                        <p>
+                            Fetches all matches for a certain user. It is not ordered by location. It
+                            is ordered by date of the match with the most recent matches first. This
+                            is great for a user profile page.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Matches by Sport --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?sport=[sport]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?sport=tennis" target="_blank">
+                            /api/matches?sport=tennis
+                        </a>
+
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches by Sport</h4>
+                        <p>
+                            Fetch closest (up to) 40 matches of a certain sport.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Matches by lat and long --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?lat=[latitude]&lng=[longitude]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?lat=35.9855989&lng=-115.0748409" target="_blank">
+                            /api/matches?lat=35.9855989&lng=-115.0748409
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches by lat and long</h4>
+                        <p>
+                            Fetches closest 40 parks using latitude and longitude. Great for querying by user location.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Matches by zip code --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?zip=[zip_code]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?zip=89077" target="_blank">
+                            /api/matches?zip=89077
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches by zip code</h4>
+                        <p>
+                            Fetches closest (up to) 40 matches using zip code for location.
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Match - Update</h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- MATCH DETAIL and Updates ---------------------------------------->
+                <!-------------------------------------------------------------------->
+                <!-------------------------------------------------------------------->
+                <!-- Match Detail Page --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches/:id</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches/5" target="_blank">
+                            /api/matches/5
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Match Detail</h4>
+                        <p>Fetches details for a certain match</p>
+                    </td>
+                </tr>
+                <!-- Match Detail Page: Update, Delete --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches/:id</p>
+                    </td>
+                    <td class="col-md-1">PUT</td>
+                    <td class="col-md-3">
+                        <p class="post">/api/matches/1887</p>
+                        <pre>
+{
+    "title": "Bob's Match #1",
+    "description": "Looking for...",
+    "park": "https://skill-match-henderson.herokuapp.com/api/parks/174",
+    "sport": "Basketball",
+    "other": "",
+    "skill_level": 82,
+    "date": "2016-06-01",
+    "time": "15:30"
+}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Match Update and Delete</h4>
+                        <p>
+                            Update or Delete a match. Returns the updated match.
+                        </p>
+                    </td>
+                </tr>
+                <!-- Join Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches/:id/join</td>
+                    <td class="col-md-1">PUT</td>
+                    <td class="col-md-3">
+                        <p class="post">/api/matches/148/join</p>
+                        <pre>{}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Join Match</h4>
+                        <p>
+                            Logged-in user can join a match. Will return an error if not logged in.
+                            Just PUT an empty {} to the endpoint (i think). Returns the match.
+                        </p>
+                    </td>
+                </tr>
+                <!-- Leave Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches/:id/leave</td>
+                    <td class="col-md-1">PUT</td>
+                    <td class="col-md-3">
+                        <p class="post">/api/matches/148/leave</p>
+                        <pre>{}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Leave Match</h4>
+                        <p>
+                            Logged-in user can leave a match (during the period AFTER they join and BEFORE
+                            the match creator confirms it). Just PUT an empty {}. Returns the match.
+                        </p>
+                    </td>
+                </tr>
+                <!-- Decline Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches/:id/decline</td>
+                    <td class="col-md-1">PUT</td>
+                    <td class="col-md-3">
+                        <p class="post">/api/matches/148/decline</p>
+                        <pre>{}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Decline Match</h4>
+                        <p>
+                            Logged-in match creator can decline a match (AFTER it has been joined).
+                            Just PUT an empty {}. Returns the match.
+                        </p>
+
+                    </td>
+                </tr>
+                <!-- Confirm Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches/:id/confirm</td>
+                    <td class="col-md-1">PUT</td>
+                    <td class="col-md-3">
+                        <p class="post">/api/matches/148/confirm</p>
+                        <pre>{}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Confirm Match</h4>
+                        <p>
+                            Logged-in match creator can confirm the match (AFTER it has been joined).
+                            JustPUT an empty {}. Returns the match
+                        </p>
+
+                    </td>
+                </tr>
+                <!-- Cancel Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">**/api/matches/:id/cancel</td>
+                    <td class="col-md-1">PUT</td>
+                    <td class="col-md-3">
+                        <p class="post">/api/matches/148/cancel</p>
+                        <pre>{}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Cancel Match</h4>
+                        <p>
+                            Logged-in user who is part of a confirmed match, can cancel the match. Note that if it
+                            is canceled 24 hours before their match, it will affect their punctuality rating.
+                            **This endpoint has not been set yet.
+                        </p>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

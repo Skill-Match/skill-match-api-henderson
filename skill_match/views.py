@@ -24,6 +24,18 @@ def get_docs(request):
     return render(request, 'skill_match/docs.html')
 
 
+def get_match_docs(request):
+    return render(request, 'skill_match/matches.html')
+
+
+def get_park_docs(request):
+    return render(request, 'skill_match/parks.html')
+
+
+def get_user_docs(request):
+    return render(request, 'skill_match/users.html')
+
+
 class SmallPagination(PageNumberPagination):
     page_size = 20
 

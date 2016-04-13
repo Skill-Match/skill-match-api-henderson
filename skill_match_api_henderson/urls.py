@@ -19,8 +19,11 @@ from django.contrib import admin
 from skill_match import views
 
 urlpatterns = [
-    url(r'^$', views.get_docs),
+    url(r'^$', views.get_docs, name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('skill_match.urls')),
     url(r'^users/', include('users.urls')),
+    url(r'^docs/matches', views.get_match_docs, name='match_docs'),
+    url(r'^docs/parks', views.get_park_docs, name='park_docs'),
+    url(r'^docs/users', views.get_user_docs, name='user_docs')
 ]

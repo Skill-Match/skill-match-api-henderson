@@ -6,7 +6,11 @@ from users.models import Profile
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('gender', 'age')
+        fields = ('gender', 'age', 'wants_texts', 'phone_number')
+        extra_kwargs = {
+                        'wants_texts': {'required': False},
+                        'phone_number': {'required': False}
+                        }
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,13 +20,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password',
-                  'profile')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('id', 'username', 'email', 'password', 'profile')
+        extra_kwargs = {'password': {'write_only': True, 'required': False}}
         read_only_fields = ('id',)
 
+    # Overwrite to create profile during create process
     def create(self, validated_data):
-        # Overwrite to create profile during create process
         user = User.objects.create_user(
             email=validated_data['email'].lower(),
             username=validated_data['username'].lower(),
@@ -38,15 +41,18 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        user = instance
-        user.email = validated_data['email']
-        user.password = validated_data['password']
-        user.username = validated_data['username']
-        profile_data = validated_data.pop('profile')
-        user.profile.gender = profile_data['gender']
-        user.profile.age = profile_data['age']
-        user.profile.phone_number = profile_data['phone_number']
-        user.profile.wants_texts = profile_data['wants_texts']
-        user.profile.save()
+        instance.email = validated_data.get('email', instance.email)
+        instance.password = validated_data.get('password', instance.password)
+        instance.username = validated_data.get('username', instance.username)
+        instance.save()
 
-        return user
+        profile = instance.profile
+        profile_data = validated_data.pop('profile')
+        profile.gender = profile_data.get('gender', profile.gender)
+        profile.age = profile_data.get('age', profile.age)
+        profile.wants_texts = profile_data.get('wants_texts', profile.wants_texts)
+        profile.phone_number = profile_data.get('phone_number', profile.phone_number)
+
+        profile.save()
+
+        return instance

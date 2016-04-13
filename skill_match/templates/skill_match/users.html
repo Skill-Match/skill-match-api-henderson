@@ -1,0 +1,110 @@
+{% extends 'skill_match/base.html' %}
+{% load staticfiles %}
+
+{% block title %} Users {% endblock %}
+
+{% block content%}
+    <div class="row">
+        <h1>Users</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-md-3">/users/register</td>
+                    <td class="col-md-1">POST</td>
+                    <td class="col-md-3">
+                        <a class="post" href="{% url 'register_user' %}" target="_blank">
+                            /users/register
+                        </a>
+                        <pre>
+{
+    "username": "sue",
+    "email": "sue@sue.com",
+    "password": "password",
+    "profile": {
+        "gender": "Female",
+        "age": "20's"
+    }
+}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Register New User</h4>
+                        <p>
+                            New users must have a profile that requires gender and age. Both profile fields have choice
+                            options as follows.
+                        </p>
+                        <p>Gender: 'Male', 'Female', 'Other'</p>
+                        <p>Age: 'Under 18', '18-19', "20's", "30's", "40's", "50's", "60+".</p>
+
+                    </td>
+                <!-- Detail Update User ----------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/users/:id</td>
+                    <td class="col-md-1">GET, PUT, DELETE</td>
+                    <td class="col-md-3">
+                        <a class="post" href="{% url 'user-detail' 5 %}" target="_blank">
+                            /users/5
+                        </a>
+                        <pre>
+{
+    "username": "sue",
+    "email": "sue@sue.com",
+    "profile": {
+        "gender": "Female",
+        "age": "20's",
+        "wants_texts": true,
+        "phone_number": "702-249-3748"
+    }
+}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Register New User</h4>
+                        <p>
+                            For now, every field used for create are also required for updates, except for "password".
+                            You don't need the password because only a logged-in user may see his/her own details, and perform updates on them.
+                            Updating the User Profile can include additonal options. These options are:
+                        </p>
+                        <p>want_texts: true or false (boolean)</p>
+                        <p>phone_number: in the format xxx-xxx-xxxx </p>
+
+                    </td>
+                </tr>
+                <!-- Obtain Auth Token ----------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/users/obtain-token</td>
+                    <td class="col-md-1">POST</td>
+                    <td class="col-md-3">
+                        <a class="post" href="{% url 'obtain_auth_token' %}" target="_blank">
+                            /users/obtain-token
+                        </a>
+                        <pre>
+{
+    "username": "test_dude",
+    "password": "ironyard"
+}</pre><p>Response</p><pre>
+{
+  "token": "872ace410c8arst3...",
+  "username": "test_dude",
+  "user_id": 232
+}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Obtain Auth Token</h4>
+                        <p>
+                            Retrieve an auth token the user can use for future
+                            requests. Also fetches the username and user-id.
+                        </p>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

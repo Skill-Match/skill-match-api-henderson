@@ -1,0 +1,138 @@
+{% extends 'skill_match/base.html' %}
+{% load staticfiles %}
+
+{% block title %} Parks {% endblock %}
+
+{% block content%}
+    <div class="row">
+        <h1>Parks</h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- List Parks --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/parks</td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'list_parks' %}">
+                            /api/parks
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Parks</h4>
+                        <p>
+                            Fetches the 40 closest parks by location. Location can be provided with a zip
+                            code or coordinates (see examples below). If no location is provided, the
+                            default location is Henderson, NV.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Parks with Courts --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/parks?courts=[anything]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'list_parks' %}?courts=z">
+                            /api/parks?courts=z
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Parks with Courts</h4>
+                        <p>
+                            Fetches nearest parks with courts. In other words, it excludes all parks with no
+                            courts.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Parks by Sport --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/parks?sport=[sport]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'list_parks' %}?sport=tennis">
+                            /api/parks?sport=tennis
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Parks by Sport</h4>
+                        <p>
+                            Fetch closest (up to) 40 parks with a court of a certain sport.
+                        </p>
+                    </td>
+                </tr>
+                <!-- Search Park name or zip code --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/parks?search=[zip_code or park_name]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <p>
+                            <a target="_blank" href="{% url 'list_parks' %}?search=89123">
+                                /api/parks?search=89123
+                            </a>
+                        </p>
+                        <p>
+                            <a target="_blank" href="{% url 'list_parks' %}?search=whitney mesa">
+                                /api/parks?search=whitney mesa
+                            </a>
+                        </p>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Search by zip code or park name</h4>
+                        If search is a 5 digit number, this fetches 40 parks by location using the zip code provided.
+                        If search is anything else, it uses the search term to find parks with that name. Currently the
+                        parks fetched must contain all search terms in the park.name.
+                    </td>
+                </tr>
+                <!-- List Parks by location --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/parks?lat=[latitude]&lng=[longitude]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'list_parks' %}?lat=35.9855989&lng=-115.0748409">
+                            /api/parks?lat=35.9855989&lng=-115.0748409
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List parks by location</h4>
+                        <p>
+                            Fetches closest 40 parks using latitude and longitude. Great for querying by user location.
+                        </p>
+                    </td>
+                </tr>
+                <!-- Park Detail --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/parks/:id</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'hendersonpark-detail' 42 %}">
+                            /api/parks/42
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Park Detail</h4>
+                        <p>
+                            Return detail for a particular park.
+                        </p>
+                    </td>
+                </tr>
+            <tbody>
+        </table>
+    </div>
+{% endblock %}
