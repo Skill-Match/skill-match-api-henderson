@@ -15,7 +15,7 @@
             padding-top: 40px;
         }
         .post {
-            color: #d14;
+            color: #990012;
         }
         .container {
             background-color: #fafafa;
@@ -104,12 +104,12 @@
                     <td class="col-md-1">GET</td>
                     <td class="col-md-3">
                         <p>
-                            <a target="_blank" href="">
+                            <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?search=89123">
                                 /api/parks?search=89123
                             </a>
                         </p>
                         <p>
-                            <a target="_blank" href="">
+                            <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?search=whitney mesa">
                                 /api/parks?search=whitney mesa
                             </a>
                         </p>
@@ -128,7 +128,7 @@
                     </td>
                     <td class="col-md-1">GET</td>
                     <td class="col-md-3">
-                        <a target="_blank" href="">
+                        <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?lat=35.9855989&lng=-115.0748409">
                             /api/parks?lat=35.9855989&lng=-115.0748409
                         </a>
                     </td>
@@ -146,8 +146,8 @@
                     </td>
                     <td class="col-md-1">GET</td>
                     <td class="col-md-3">
-                        <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks/85">
-                            /api/parks/85
+                        <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks/42">
+                            /api/parks/42
                         </a>
                     </td>
                     <td class="col-md-5 description">
@@ -198,7 +198,7 @@
                     <td class="col-md-3">/api/matches</td>
                     <td class="col-md-1">POST</td>
                     <td class="col-md-3">
-                        <p>/api/matches</p>
+                        <p class="post">/api/matches</p>
                         <pre>
 {
     "title": "",
@@ -334,7 +334,7 @@
                     </td>
                     <td class="col-md-1">PUT</td>
                     <td class="col-md-3">
-                        <p>/api/matches/1887</p>
+                        <p class="post">/api/matches/1887</p>
                         <pre>
 {
     "title": "",
@@ -359,7 +359,7 @@
                     <td class="col-md-3">/api/matches/:id/join</td>
                     <td class="col-md-1">PUT</td>
                     <td class="col-md-3">
-                        <p>/api/matches/148/join</p>
+                        <p class="post">/api/matches/148/join</p>
                         <pre>{}</pre>
                     </td>
                     <td class="col-md-5 description">
@@ -375,7 +375,7 @@
                     <td class="col-md-3">/api/matches/:id/leave</td>
                     <td class="col-md-1">PUT</td>
                     <td class="col-md-3">
-                        <p>/api/matches/148/leave</p>
+                        <p class="post">/api/matches/148/leave</p>
                         <pre>{}</pre>
                     </td>
                     <td class="col-md-5 description">
@@ -391,7 +391,7 @@
                     <td class="col-md-3">/api/matches/:id/decline</td>
                     <td class="col-md-1">PUT</td>
                     <td class="col-md-3">
-                        <p>/api/matches/148/decline</p>
+                        <p class="post">/api/matches/148/decline</p>
                         <pre>{}</pre>
                     </td>
                     <td class="col-md-5 description">
@@ -408,7 +408,7 @@
                     <td class="col-md-3">/api/matches/:id/confirm</td>
                     <td class="col-md-1">PUT</td>
                     <td class="col-md-3">
-                        <p>/api/matches/148/confirm</p>
+                        <p class="post">/api/matches/148/confirm</p>
                         <pre>{}</pre>
                     </td>
                     <td class="col-md-5 description">
@@ -425,7 +425,7 @@
                     <td class="col-md-3">**/api/matches/:id/cancel</td>
                     <td class="col-md-1">PUT</td>
                     <td class="col-md-3">
-                        <p>/api/matches/148/cancel</p>
+                        <p class="post">/api/matches/148/cancel</p>
                         <pre>{}</pre>
                     </td>
                     <td class="col-md-5 description">
@@ -458,7 +458,7 @@
                     <td class="col-md-3">/users/register</td>
                     <td class="col-md-1">POST</td>
                     <td class="col-md-3">
-                        <a class="post" href="https://skill-match-henderson.herokuapp.com/users/register/" target="_blank">
+                        <a class="post" href="{% url 'register_user' %}" target="_blank">
                             /users/register
                         </a>
                         <pre>
@@ -485,7 +485,7 @@
                     <td class="col-md-3">/users/:id</td>
                     <td class="col-md-1">GET, PUT, DELETE</td>
                     <td class="col-md-3">
-                        <a class="post" href="https://skill-match-henderson.herokuapp.com/users/5/" target="_blank">
+                        <a class="post" href="{% url 'register_user' %}" target="_blank">
                             /users/5
                         </a>
                         <pre>
