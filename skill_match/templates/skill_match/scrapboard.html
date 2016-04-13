@@ -1,0 +1,175 @@
+                <tr>
+                    <td>/api/parks?courts=[anything]</td>GET
+                    Example https://skill-match-henderson.herokuapp.com/api/parks?courts=z
+                    Returns only parks with courts.
+
+                    <td>/api/parks?sport=[sport]</td>GET
+                    https://skill-match-henderson.herokuapp.com/api/parks?sport=tennis
+                    Returns only parks with a tennis court
+
+                    <td>/api/parks?search=[zip_code or park_name]</td>GET
+                    Example https://skill-match-henderson.herokuapp.com/api/parks?search=89123
+                    Use 89123 for location and return closest parks.
+
+                    Example 2: https://skill-match-henderson.herokuapp.com/api/parks?search=whitney mesa
+                    Returns parks with both "whitney" and "mesa" in the title
+
+                    <td>/api/parks?lat=[latitude]&lng=[longitude]</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/parks?lat=35.9855989&lng=-115.0748409
+                    Return parks closest to this Henderson location. Use this with the browser's geolocation to get a user's location.
+
+                    <td>/api/parks/:id</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/parks/85
+                    Return the details for that particular park
+
+
+
+
+
+
+
+
+
+                    <td>/api/matches</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches
+                    Return list of matches. The default ordering is by location, and the default location is Henderson, NV.
+
+                    <td>/api/matches</td>POST
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches
+                    <pre>
+                        { }
+                    </pre>
+                    Return the created match.
+
+                    <td>/api/matches?username=[username]</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches?username=tennismonster
+                    Return all the matches for the user with username tennismonster
+
+                    <td>/api/matches?sport=[sport]</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches?sport=tennis
+                    Return all matches with the sport tennis.
+
+                    <td>/api/matches?lat=[latitude]&lng=[longitude]</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches?lat=35.9855989&lng=-115.0748409
+                    Return matches at parks closest to this Henderson location.
+
+                    <td>/api/matches?zip=[zip_code]</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches?zip=89077
+                    Return matches at parks closest to this zip code.
+
+                    <td>/api/matches/:id</td>GET
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches/1298
+                    Return match details for the match with id 1298
+
+                    <td>/api/matches/:id</td>PUT, DELETE
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches/1887
+                    Update or Delete a match. Returns the updated match.
+
+                    <td>/api/matches/:id/join</td>PUT
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches/148/join
+                    Logged-in user can join a match. Will return an error if not logged in.
+                    PUT an empty {} (i think)
+
+                    <td>/api/matches/:id/leave</td>PUT
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches/148/leave
+                    Logged-in user can leave a match (during the period AFTER they join and BEFORE the match creator confirms it)
+                    PUT an empty {}
+                    Returns the match.
+
+                    <td>/api/matches/:id/decline</td>PUT
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches/148/decline
+                    Logged-in match creator declines a match (AFTER it has been joined).
+                    PUT an empty {}
+                    Returns the match.
+
+                    <td>/api/matches/:id/confirm</td>PUT
+                    Example: https://skill-match-henderson.herokuapp.com/api/matches/148/confirm
+                    Logged-in match creator confirms a match
+                    PUT an empty {}
+                    Returns the match
+
+
+
+
+
+
+
+
+
+                    <td>/api/feedbacks</td>POST
+                    Example/api/feedbacks
+                    <pre>
+                        { }
+                    </pre>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>/api/parks?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>/api/parks?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>/api/parks?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>/api/parks?</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+                                <!-- NEW ROW ------------------------------------------------>
+                <tr>
+                    <td>/api/parks</td>
+                    <td>GET</td>
+
+                    <td><!-- ugly pre ----------------------------------------->
+                        <pre style="color:#d14">
+{
+    "count": 40,
+    "next": "http://localhost:8000/api/parks/?page=2",
+    "previous": null,
+    "results": [
+        {
+            "url": "http://localhost:8000/api/parks/143/",
+            "id": 143,
+            "name": "Amargosa Trail and Trailheads",
+            "address": "No address provided",
+            "img_url": "http://www.cityofhenderson.com...",
+            "distance": "0.00",
+            "amenities": [],
+            "henderson_url": "http://www.cityofhenderson.com...",
+            "court_images": []
+        },
+        {...},
+        {...}
+    ],
+},</pre>
+                    </td><!-- end pre ------------------------------------------>
+
+                    <td>
+                        <p>
+                            List of parks in Henderson, NV. Default ordering is by location. The default location is the coordinates provided when
+                            searching for Henderson, NV in Google Maps.
+                        </p>
+                    </td>
+
+                </tr>
+
+
+register
+
+

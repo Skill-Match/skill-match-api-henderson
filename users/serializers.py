@@ -6,7 +6,7 @@ from users.models import Profile
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('gender', 'age', 'phone_number', 'wants_texts',)
+        fields = ('gender', 'age')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -33,8 +33,6 @@ class UserSerializer(serializers.ModelSerializer):
             user=user,
             gender=profile_data.get('gender'),
             age=profile_data.get('age'),
-            phone_number=profile_data.get('phone_number'),
-            wants_texts=profile_data.get('wants_texts'),
         )
 
         return user

@@ -16,6 +16,7 @@ class Profile(models.Model):
     MALE = 'Male'
     FEMALE = 'Female'
     OTHER = 'Other'
+
     UNDER_18 = 'Under 18'
     LATE_TEEN = '18-19'
     TWENTIES = "20's"
@@ -25,8 +26,8 @@ class Profile(models.Model):
     SIXTY = "60+"
 
     GENDER_CHOICES = (
-        (MALE, 'Man'),
-        (FEMALE, 'Woman'),
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
         (OTHER, 'Other')
     )
     AGE_CHOICES = (

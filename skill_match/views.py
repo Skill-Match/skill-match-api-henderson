@@ -4,6 +4,10 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.renderers import StaticHTMLRenderer
+from rest_framework.response import Response
 from skill_match.exceptions import NotInMatch, NonExistingPlayer, \
     OneFeedbackAllowed, NoPlayerToConfirmOrDecline, \
     OnlyCreatorMayConfirmOrDecline, AlreadyConfirmed, SelfSignUp, AlreadyJoined
@@ -13,6 +17,15 @@ from skill_match.serializers import HendersonParkSerializer, MatchSerializer, \
     FeedbackSerializer, ChallengerMatchSerializer
 from django.contrib.gis.geos import GEOSGeometry as Geos
 from skill_match.tasks import update_skills, test_task
+
+
+# Simple Docs of endpoints
+def get_docs(request):
+    return render(request, 'skill_match/docs.html')
+
+
+class SmallPagination(PageNumberPagination):
+    page_size = 20
 
 
 ###############################################################################
@@ -49,6 +62,7 @@ TROPHY_IMG_URL = "http://res.cloudinary.com/skill-match/image/upload/" \
 class ListHendersonParks(generics.ListAPIView):
     queryset = HendersonPark.objects.all()
     serializer_class = HendersonParkSerializer
+    pagination_class = SmallPagination
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -60,14 +74,19 @@ class ListHendersonParks(generics.ListAPIView):
         # Default Point (location) for Henderson, NV
         pnt = Geos('POINT(-114.9817213 36.0395247)', srid=4326)
 
+        # Filter: only Parks with Courts
+        if courts:
+            qs = qs.annotate(count=Count('court')).exclude(count=0)
+
         # Filter by specific sport
         if sport:
             sport = sport.title()
             qs = qs.filter(court__sport=sport)
 
-        # Filter: only Parks with Courts
-        if courts:
-            qs = qs.annotate(count=Count('court')).exclude(count=0)
+        # If lat and lng are passed set location to filter by
+        if latitude and longitude:
+            pnt = Geos('POINT(' + str(longitude) + ' ' + str(latitude) + ')',
+                       srid=4326)
 
         # Filter by location if search is a zip_code (5 digit number)
         # Otherwise use search to find HendersonParks with a name
@@ -82,11 +101,6 @@ class ListHendersonParks(generics.ListAPIView):
                            str(g_latitude) + ')', srid=4326)
             else:
                 qs = qs.filter(name__icontains=search)
-
-        # If lat and lng are passed set location to filter by
-        if latitude and longitude:
-            pnt = Geos('POINT(' + str(longitude) + ' ' + str(latitude) + ')',
-                       srid=4326)
 
         # Filter by distance to the pnt (location)
         qs = qs.annotate(distance=Distance(
@@ -170,16 +184,13 @@ class ListCreateMatches(generics.ListCreateAPIView):
             sport = sport.title()
             qs = qs.filter(sport=sport).filter(status='Open')
 
-        # Filter for only matches involving a certain user
-        if username:
-            qs = Match.objects.filter(players__username=username).\
-                order_by('-date')
-
         # Filter by distance of latitude and longitude, zip_code, or default
         if latitude and longitude:
             pnt = Geos('POINT(' + str(longitude) + ' ' + str(latitude) + ')',
                        srid=4326)
             qs = qs.filter(status='Open')
+
+        # Consider changing this to include a park search
         elif zip_code:
             # Geocode to get latitude and longitude from zip_code
             g = geocoder.google(zip_code + ' NV')
@@ -194,6 +205,11 @@ class ListCreateMatches(generics.ListCreateAPIView):
 
         qs = qs.annotate(distance=Distance(
                 'park__location', pnt)).order_by('distance')[:40]
+
+        # Filter for only matches involving a certain user
+        if username:
+            qs = Match.objects.filter(players__username=username).\
+                order_by('-date')
 
         return qs
 
