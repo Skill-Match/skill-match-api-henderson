@@ -12,4 +12,9 @@ h4 {
 
 .container {
     background-color: #fafafa;
+    padding: 40px;
+}
+
+.nav {
+    font-size: 2rem;
 }

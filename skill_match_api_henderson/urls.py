@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^users/', include('users.urls')),
     url(r'^docs/matches', views.get_match_docs, name='match_docs'),
     url(r'^docs/parks', views.get_park_docs, name='park_docs'),
-    url(r'^docs/users', views.get_user_docs, name='user_docs')
+    url(r'^docs/users', views.get_user_docs, name='user_docs'),
+    url(r'^docs/feedbacks', views.get_feedback_docs, name='feedback_docs')
 ]

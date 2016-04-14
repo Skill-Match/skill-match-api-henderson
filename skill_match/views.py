@@ -36,6 +36,10 @@ def get_user_docs(request):
     return render(request, 'skill_match/users.html')
 
 
+def get_feedback_docs(request):
+    return render(request, 'skill_match/feedback.html')
+
+
 class SmallPagination(PageNumberPagination):
     page_size = 20
 
@@ -433,7 +437,7 @@ class CreateFeedback(generics.CreateAPIView):
         # Look up Match related to feedback
         match_id = serializer.initial_data['match']
         match = Match.objects.get(pk=match_id)
-
+        
         # Assure user is in the related match.
         if reviewer not in match.players.all():
             raise NotInMatch

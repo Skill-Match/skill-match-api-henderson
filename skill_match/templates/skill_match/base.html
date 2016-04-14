@@ -10,18 +10,22 @@
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <ul class="nav nav-tabs">
-                <li role="presentation"><a href="{% url 'index' %}">All</a></li>
-                <li role="presentation"><a href="{% url 'park_docs' %}">Parks</a></li>
-                <li role="presentation"><a href="{% url 'match_docs' %}">Matches</a></li>
-                <li role="presentation"><a href="{% url 'user_docs' %}">Users</a></li>
-            </ul>
+        <div class="row" role="navigation">
+            <div class="col-md-8">
+                <ul class="nav nav-tabs nav-justified">
+                    <li role="presentation" class="active"><a href="{% url 'index' %}"> All </a></li>
+                    <li role="presentation"><a href="{% url 'park_docs' %}"> Parks </a></li>
+                    <li role="presentation"><a href="{% url 'match_docs' %}"> Matches </a></li>
+                    <li role="presentation"><a href="{% url 'user_docs' %}"> Users </a></li>
+                    <li role="presentation"><a href="{% url 'feedback_docs' %}"> Feedbacks </a></li>
+                </ul>
+            </div>
         </div>
         {% block content %}{% endblock %}
     </div>
 
     <script src="{% static "skill_match/js/jquery-2.2.3.min.js" %}"></script>
     <script src="{% static "skill_match/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "skill_match/js/main.js" %}"></script>
 
 </body>

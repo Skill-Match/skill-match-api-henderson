@@ -1,0 +1,45 @@
+{% extends 'skill_match/base.html' %}
+{% load staticfiles %}
+
+{% block title %} Feedback {% endblock %}
+
+{% block content%}
+    <div class="row">
+        <h2>Feedback</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-md-3">/feedbacks</td>
+                    <td class="col-md-1">POST</td>
+                    <td class="col-md-3">
+                        <a class="post" href="{% url 'create_feedback' %}" target="_blank">
+                            /api/feedbacks
+                        </a>
+                        <pre>
+{
+    "match": 19,
+    "skill": 75,
+    "sportsmanship": 90,
+    "punctuality": "On Time"
+}</pre>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Create Feedback</h4>
+                        <p>
+                            Simple feedback form. If it is a 2 player match, you do not need to provide
+                            player id.
+                        </p>
+                        <p>punctuality: "On Time", "No Show", "Little bit late", "Over 10 min late"</p>
+                    </td>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

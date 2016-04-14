@@ -23,7 +23,7 @@
                 <td class="col-md-3">/api/parks</td>
                 <td class="col-md-1">GET</td>
                 <td class="col-md-3">
-                    <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks">
+                    <a target="_blank" href="{% url 'list_parks' %}">
                         /api/parks
                     </a>
                 </td>
@@ -43,7 +43,7 @@
                 </td>
                 <td class="col-md-1">GET</td>
                 <td class="col-md-3">
-                    <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?courts=z">
+                    <a target="_blank" href="{% url 'list_parks' %}?courts=z">
                         /api/parks?courts=z
                     </a>
                 </td>
@@ -62,7 +62,7 @@
                 </td>
                 <td class="col-md-1">GET</td>
                 <td class="col-md-3">
-                    <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?sport=tennis">
+                    <a target="_blank" href="{% url 'list_parks' %}?sport=tennis">
                         /api/parks?sport=tennis
                     </a>
                 </td>
@@ -81,12 +81,12 @@
                 <td class="col-md-1">GET</td>
                 <td class="col-md-3">
                     <p>
-                        <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?search=89123">
+                        <a target="_blank" href="{% url 'list_parks' %}?search=89123">
                             /api/parks?search=89123
                         </a>
                     </p>
                     <p>
-                        <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?search=whitney mesa">
+                        <a target="_blank" href="{% url 'list_parks' %}?search=whitney mesa">
                             /api/parks?search=whitney mesa
                         </a>
                     </p>
@@ -105,7 +105,7 @@
                 </td>
                 <td class="col-md-1">GET</td>
                 <td class="col-md-3">
-                    <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks?lat=35.9855989&lng=-115.0748409">
+                    <a target="_blank" href="{% url 'list_parks' %}?lat=35.9855989&lng=-115.0748409">
                         /api/parks?lat=35.9855989&lng=-115.0748409
                     </a>
                 </td>
@@ -123,7 +123,7 @@
                 </td>
                 <td class="col-md-1">GET</td>
                 <td class="col-md-3">
-                    <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/parks/42">
+                    <a target="_blank" href="{% url 'hendersonpark-detail' 42 %}">
                         /api/parks/42
                     </a>
                 </td>
@@ -142,138 +142,140 @@
     <!-------------------------------------------------------------------->
     <h3>Matches - List and Create</h3>
     <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Endpoint</th>
-                <th>Method</th>
-                <th>Example</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- List Matches --------------------------------------------------------->
-            <tr>
-                <td class="col-md-3">/api/matches</td>
-                <td class="col-md-1">GET</td>
-                <td class="col-md-3">
-                    <a target="_blank" href="https://skill-match-henderson.herokuapp.com/api/matches">
-                        /api/matches
-                    </a>
-                </td>
-                <td class="col-md-5 description">
-                    <h4>List Matches</h4>
-                    <p>
-                        Fetches the 40 closest matches by location. Location can be provided with a zip
-                        code or coordinates (see examples below). If no location is provided, the
-                        default location is Henderson, NV.
-                    </p>
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>Example</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- List Matches --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches</td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a target="_blank" href="{% url 'list_matches' %}">
+                            /api/matches
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches</h4>
+                        <p>
+                            Fetches the 40 closest matches by location. Location can be provided with a zip
+                            code or coordinates (see examples below). If no location is provided, the
+                            default location is Henderson, NV.
+                        </p>
 
-                </td>
-            </tr>
-            <!-- Create Match --------------------------------------------------------->
-            <tr>
-                <td class="col-md-3">/api/matches</td>
-                <td class="col-md-1">POST</td>
-                <td class="col-md-3">
-                    <p class="post">/api/matches</p>
-                    <pre>
+                    </td>
+                </tr>
+                <!-- Create Match --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">/api/matches</td>
+                    <td class="col-md-1">POST</td>
+                    <td class="col-md-3">
+                        <a href="{% url 'list_matches' %}" class="post">/api/matches</a>
+                        <pre>
 {
-"title": "",
-"description": "",
-"park": null,
-"sport": null,
-"other": "",
-"skill_level": null,
-"date": null,
-"time": null
+    "title": "Bob's Match #1",
+    "description": "Looking for...",
+    "park": "https://skill-match-henderson.herokuapp.com/api/parks/174",
+    "sport": "Basketball",
+    "other": "",
+    "skill_level": 82,
+    "date": "2016-06-01",
+    "time": "18:30"
 }</pre>
-                </td>
-                <td class="col-md-5 description">
-                    <h4>Create Match</h4>
-                    <p>
-                        POST to this URL will attempt to create match. ((See an example post to create
-                        a match soon. ))
-                    </p>
-                </td>
-            </tr>
-            <!-- List User Matches --------------------------------------------------------->
-            <tr>
-                <td class="col-md-3">
-                    <p>/api/matches?username=[username]</p>
-                </td>
-                <td class="col-md-1">GET</td>
-                <td class="col-md-3">
-                    <a href="https://skill-match-henderson.herokuapp.com/api/matches?username=tennismonster" target="_blank">
-                        /api/matches?username=tennismonster
-                    </a>
-                </td>
-                <td class="col-md-5 description">
-                    <h4>List User Matches</h4>
-                    <p>
-                        Fetches all matches for a certain user. It is not ordered by location. It
-                        is ordered by date of the match with the most recent matches first. This
-                        is great for a user profile page.
-                    </p>
-                </td>
-            </tr>
-            <!-- List Matches by Sport --------------------------------------------------------->
-            <tr>
-                <td class="col-md-3">
-                    <p>/api/matches?sport=[sport]</p>
-                </td>
-                <td class="col-md-1">GET</td>
-                <td class="col-md-3">
-                    <a href="https://skill-match-henderson.herokuapp.com/api/matches?sport=tennis" target="_blank">
-                        /api/matches?sport=tennis
-                    </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>Create Match</h4>
+                        <p>
+                            POST with the format in the example. The url passed into park is available with any park details you fetch.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List User Matches --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?username=[username]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?username=tennismonster" target="_blank">
+                            /api/matches?username=tennismonster
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List User Matches</h4>
+                        <p>
+                            Fetches all matches for a certain user. It is not ordered by location. It
+                            is ordered by date of the match with the most recent matches first. This
+                            is great for a user profile page.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Matches by Sport --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?sport=[sport]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?sport=tennis" target="_blank">
+                            /api/matches?sport=tennis
+                        </a>
 
-                </td>
-                <td class="col-md-5 description">
-                    <h4>List Matches by Sport</h4>
-                    <p>
-                        Fetch closest (up to) 40 matches of a certain sport.
-                    </p>
-                </td>
-            </tr>
-            <!-- List Matches by lat and long --------------------------------------------------------->
-            <tr>
-                <td class="col-md-3">
-                    <p>/api/matches?lat=[latitude]&lng=[longitude]</p>
-                </td>
-                <td class="col-md-1">GET</td>
-                <td class="col-md-3">
-                    <a href="https://skill-match-henderson.herokuapp.com/api/matches?lat=35.9855989&lng=-115.0748409" target="_blank">
-                        /api/matches?lat=35.9855989&lng=-115.0748409
-                    </a>
-                </td>
-                <td class="col-md-5 description">
-                    <h4>List Matches by lat and long</h4>
-                    <p>
-                        Fetches closest 40 parks using latitude and longitude. Great for querying by user location.
-                    </p>
-                </td>
-            </tr>
-            <!-- List Matches by zip code --------------------------------------------------------->
-            <tr>
-                <td class="col-md-3">
-                    <p>/api/matches?zip=[zip_code]</p>
-                </td>
-                <td class="col-md-1">GET</td>
-                <td class="col-md-3">
-                    <a href="https://skill-match-henderson.herokuapp.com/api/matches?zip=89077" target="_blank">
-                        /api/matches?zip=89077
-                    </a>
-                </td>
-                <td class="col-md-5 description">
-                    <h4>List Matches by zip code</h4>
-                    <p>
-                        Fetches closest (up to) 40 matches using zip code for location.
-                    </p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches by Sport</h4>
+                        <p>
+                            Fetch closest (up to) 40 matches of a certain sport.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Matches by lat and long --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?lat=[latitude]&lng=[longitude]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?lat=35.9855989&lng=-115.0748409" target="_blank">
+                            /api/matches?lat=35.9855989&lng=-115.0748409
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches by lat and long</h4>
+                        <p>
+                            Fetches closest 40 parks using latitude and longitude. Great for querying by user location.
+                        </p>
+                    </td>
+                </tr>
+                <!-- List Matches by zip code --------------------------------------------------------->
+                <tr>
+                    <td class="col-md-3">
+                        <p>/api/matches?zip=[zip_code]</p>
+                    </td>
+                    <td class="col-md-1">GET</td>
+                    <td class="col-md-3">
+                        <a href="https://skill-match-henderson.herokuapp.com/api/matches?zip=89077" target="_blank">
+                            /api/matches?zip=89077
+                        </a>
+                    </td>
+                    <td class="col-md-5 description">
+                        <h4>List Matches by zip code</h4>
+                        <p>
+                            Fetches closest (up to) 40 matches using zip code for location.
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
+    <!-- MATCHE UPDATE --------------------------------------------------->
+    <!-------------------------------------------------------------------->
+    <!-------------------------------------------------------------------->
     <h3>Match - Update</h3>
     <table class="table table-hover">
         <thead>
@@ -314,14 +316,14 @@
                     <p class="post">/api/matches/1887</p>
                     <pre>
 {
-"title": "",
-"description": "",
-"park": null,
-"sport": null,
+"title": "Bob's Match #1",
+"description": "Looking for...",
+"park": "https://skill-match-henderson.herokuapp.com/api/parks/174",
+"sport": "Basketball",
 "other": "",
-"skill_level": null,
-"date": null,
-"time": null
+"skill_level": 82,
+"date": "2016-06-01",
+"time": "15:30"
 }</pre>
                 </td>
                 <td class="col-md-5 description">
@@ -417,109 +419,152 @@
             </tr>
         </tbody>
     </table>
+
     <!-- USERS ----------------------------------------------------------->
     <!-------------------------------------------------------------------->
     <!-------------------------------------------------------------------->
     <h3>USERS</h3>
     <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Endpoint</th>
-                    <th>Method</th>
-                    <th>Example</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="col-md-3">/users/register</td>
-                    <td class="col-md-1">POST</td>
-                    <td class="col-md-3">
-                        <a class="post" href="{% url 'register_user' %}" target="_blank">
-                            /users/register
-                        </a>
-                        <pre>
+        <thead>
+            <tr>
+                <th>Endpoint</th>
+                <th>Method</th>
+                <th>Example</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-md-3">/users/register</td>
+                <td class="col-md-1">POST</td>
+                <td class="col-md-3">
+                    <a class="post" href="{% url 'register_user' %}" target="_blank">
+                        /users/register
+                    </a>
+                    <pre>
 {
-    "username": "sue",
-    "email": "sue@sue.com",
-    "password": "password",
-    "profile": {
-        "gender": "Female",
-        "age": "20's"
-    }
+"username": "sue",
+"email": "sue@sue.com",
+"password": "password",
+"profile": {
+    "gender": "Female",
+    "age": "20's"
+}
 }</pre>
-                    </td>
-                    <td class="col-md-5 description">
-                        <h4>Register New User</h4>
-                        <p>
-                            New users must have a profile that requires gender and age. Both profile fields have choice
-                            options as follows.
-                        </p>
-                        <p>Gender: 'Male', 'Female', 'Other'</p>
-                        <p>Age: 'Under 18', '18-19', "20's", "30's", "40's", "50's", "60+".</p>
+                </td>
+                <td class="col-md-5 description">
+                    <h4>Register New User</h4>
+                    <p>
+                        New users must have a profile that requires gender and age. Both profile fields have choice
+                        options as follows.
+                    </p>
+                    <p>Gender: 'Male', 'Female', 'Other'</p>
+                    <p>Age: 'Under 18', '18-19', "20's", "30's", "40's", "50's", "60+".</p>
 
-                    </td>
-                <!-- Detail Update User ----------------------------------------------------------->
-                <tr>
-                    <td class="col-md-3">/users/:id</td>
-                    <td class="col-md-1">GET, PUT, DELETE</td>
-                    <td class="col-md-3">
-                        <a class="post" href="{% url 'user-detail' 5 %}" target="_blank">
-                            /users/5
-                        </a>
-                        <pre>
+                </td>
+            <!-- Detail Update User ----------------------------------------------------------->
+            <tr>
+                <td class="col-md-3">/users/:id</td>
+                <td class="col-md-1">GET, PUT, DELETE</td>
+                <td class="col-md-3">
+                    <a class="post" href="{% url 'user-detail' 5 %}" target="_blank">
+                        /users/5
+                    </a>
+                    <pre>
 {
-    "username": "sue",
-    "email": "sue@sue.com",
-    "profile": {
-        "gender": "Female",
-        "age": "20's",
-        "wants_texts": true,
-        "phone_number": "702-249-3748"
-    }
+"username": "sue",
+"email": "sue@sue.com",
+"profile": {
+    "gender": "Female",
+    "age": "20's",
+    "wants_texts": true,
+    "phone_number": "702-249-3748"
+}
 }</pre>
-                    </td>
-                    <td class="col-md-5 description">
-                        <h4>Register New User</h4>
-                        <p>
-                            For now, every field used for create are also required for updates, except for "password".
-                            You don't need the password because only a logged-in user may see his/her own details, and perform updates on them.
-                            Updating the User Profile can include additonal options. These options are:
-                        </p>
-                        <p>want_texts: true or false (boolean)</p>
-                        <p>phone_number: in the format xxx-xxx-xxxx </p>
+                </td>
+                <td class="col-md-5 description">
+                    <h4>Register New User</h4>
+                    <p>
+                        For now, every field used for create are also required for updates, except for "password".
+                        You don't need the password because only a logged-in user may see his/her own details, and perform updates on them.
+                        Updating the User Profile can include additonal options. These options are:
+                    </p>
+                    <p>want_texts: true or false (boolean)</p>
+                    <p>phone_number: in the format xxx-xxx-xxxx </p>
 
-                    </td>
-                </tr>
-                <!-- Obtain Auth Token ----------------------------------------------------------->
-                <tr>
-                    <td class="col-md-3">/users/obtain-token</td>
-                    <td class="col-md-1">POST</td>
-                    <td class="col-md-3">
-                        <a class="post" href="{% url 'obtain_auth_token' %}" target="_blank">
-                            /users/obtain-token
-                        </a>
-                        <pre>
+                </td>
+            </tr>
+            <!-- Obtain Auth Token ----------------------------------------------------------->
+            <tr>
+                <td class="col-md-3">/users/obtain-token</td>
+                <td class="col-md-1">POST</td>
+                <td class="col-md-3">
+                    <a class="post" href="{% url 'obtain_auth_token' %}" target="_blank">
+                        /users/obtain-token
+                    </a>
+                    <pre>
 {
-    "username": "test_dude",
-    "password": "ironyard"
+"username": "test_dude",
+"password": "ironyard"
 }</pre><p>Response</p><pre>
 {
-  "token": "872ace410c8arst3...",
-  "username": "test_dude",
-  "user_id": 232
+"token": "872ace410c8arst3...",
+"username": "test_dude",
+"user_id": 232
 }</pre>
-                    </td>
-                    <td class="col-md-5 description">
-                        <h4>Obtain Auth Token</h4>
-                        <p>
-                            Retrieve an auth token the user can use for future
-                            requests. Also fetches the username and user-id.
-                        </p>
+                </td>
+                <td class="col-md-5 description">
+                    <h4>Obtain Auth Token</h4>
+                    <p>
+                        Retrieve an auth token the user can use for future
+                        requests. Also fetches the username and user-id. Use this token
+                        in future request in the header as Authorization Token: arst09ars0...
+                    </p>
 
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- FEEDBACK--------------------------------------------------------->
+    <!-------------------------------------------------------------------->
+    <!-------------------------------------------------------------------->
+    <h3>Feedback</h3>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Endpoint</th>
+                <th>Method</th>
+                <th>Example</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col-md-3">/feedbacks</td>
+                <td class="col-md-1">POST</td>
+                <td class="col-md-3">
+                    <a class="post" href="{% url 'create_feedback' %}" target="_blank">
+                        /api/feedbacks
+                    </a>
+                    <pre>
+{
+"match": 19,
+"skill": 75,
+"sportsmanship": 90,
+"punctuality": "On Time"
+}</pre>
+                </td>
+                <td class="col-md-5 description">
+                    <h4>Create Feedback</h4>
+                    <p>
+                        Simple feedback form. If it is a 2 player match, you do not need to provide
+                        player id.
+                    </p>
+                    <p>punctuality: "On Time", "No Show", "Little bit late", "Over 10 min late"</p>
+                </td>
+        </tbody>
+    </table>
+
 
     {% endblock %}
