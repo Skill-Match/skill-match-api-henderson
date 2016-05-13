@@ -91,7 +91,7 @@ class ListHendersonParks(generics.ListAPIView):
         pnt = Geos('POINT(-114.9817213 36.0395247)', srid=4326)
 
         # Filter: only Parks with Courts
-        if courts:
+        if not courts:
             qs = qs.annotate(count=Count('court')).exclude(count=0)
 
         # Filter by specific sport
